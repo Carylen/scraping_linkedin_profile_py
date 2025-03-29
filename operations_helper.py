@@ -56,7 +56,7 @@ def getUrl(driver):
     return all_profile_URL
 
 def getSkills(driver):
-    all_skills = []
+    skills = []
     main_section = driver.find_element(by=By.TAG_NAME, value='main')
     inner_main_section = main_section.find_elements(by=By.TAG_NAME, value='li')
     skill_section = inner_main_section[6].click()
@@ -66,6 +66,8 @@ def getSkills(driver):
     list_skill = driver.find_elements(by=By.CSS_SELECTOR, value='main > section > div:nth-child(1) > div:nth-child(1) > div > div > div > ul > li')
     for skill in list_skill:
         detail = skill.find_element(by=By.TAG_NAME, value='span').text
-        if detail not in all_skills:
-            all_skills.append(detail)
+        if detail not in skills:
+            skills.append(detail)
         
+    all_skill = ','.join(skills)
+    return all_skill
