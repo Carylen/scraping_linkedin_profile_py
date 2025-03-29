@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
@@ -32,12 +33,12 @@ def getPeople(driver, search_key):
     # Task 2.2: Input the search query to the search bar
     search_field.send_keys(search_key)
     search_field.send_keys(Keys.RETURN)
-    sleep(4)
+    sleep(2)
 
     # Task 2.3: Filter that shows the related peoples only
     filter_selection = driver.find_element(by=By.CLASS_NAME, value='search-reusables__filters-bar-grouping')
     filtered = filter_selection.find_elements(by=By.TAG_NAME, value='li')
-    people = filtered[2].click()
+    people = filtered[1].click()
     sleep(3)
     print('- Finish Task 2: Search for profiles')
 
@@ -57,10 +58,15 @@ def getUrl(driver):
 
 def getSkills(driver):
     skills = []
+    action_driver = ActionChains(driver)
     main_section = driver.find_element(by=By.TAG_NAME, value='main')
-    inner_main_section = main_section.find_elements(by=By.TAG_NAME, value='li')
-    skill_section = inner_main_section[6].click()
+    inner_main_section = main_section.find_elements(by=By.TAG_NAME, value='section')
+    skill_button = inner_main_section[6]
+    # skill_button = skill_button.find_element(by=By.CLASS_NAME, value='pvs-list__footer-wrapper')
+    # skill_button_link = skill_button.find_element(by=By.TAG_NAME, value='a')
+    action_driver.scroll_to_element(skill_button).perform()
     sleep(2)
+    # skill_button_link.click()
     # main_section_skill = driver.find_element(by=By.TAG_NAME, value='main')
     # list_skill = main_section_skill.find_element(by=By.TAG_NAME, value='ul')
     list_skill = driver.find_elements(by=By.CSS_SELECTOR, value='main > section > div:nth-child(1) > div:nth-child(1) > div > div > div > ul > li')

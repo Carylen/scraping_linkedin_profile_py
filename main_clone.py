@@ -1,9 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 from time import sleep
-from scraping_linkedin_profile_py.operations_helper import login, getUrl, getPeople, getSkills
+from operations_helper import login, getUrl, getPeople, getSkills
 import csv
 
 print('- Finish importing package')
@@ -52,6 +52,7 @@ try:
             # Get the job title of the person
             title = main_container.find_element(by=By.CLASS_NAME, value='text-body-medium.break-words')
             # Get the skill of the person
+            sleep(1)
             all_skill = getSkills(driver)
             print('--- Profile name is: ', name.text)
             print('--- Profile location is: ', location.text)
