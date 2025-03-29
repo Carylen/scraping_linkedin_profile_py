@@ -22,12 +22,13 @@ try:
         # URLs_one_page = GetURL('GvXnnMieLesgSiMjvOXypGYCDABjCBejdLw.')
         URLs_one_page = getUrl(driver)
         sleep(2)
-        driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') #scroll to the end of the page
-        sleep(3)
-        next_button = driver.find_element(by=By.CLASS_NAME, value="artdeco-pagination__button--next")
-        driver.execute_script("arguments[0].click();", next_button)
         URLs_all_page = URLs_all_page + URLs_one_page
-        sleep(2)
+        if page > 1:
+            driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') #scroll to the end of the page
+            sleep(2)
+            next_button = driver.find_element(by=By.CLASS_NAME, value="artdeco-pagination__button--next")
+            driver.execute_script("arguments[0].click();", next_button)
+            sleep(2)
 
     print('- Finish Task 3: Scrape the URLs')
 
@@ -54,6 +55,7 @@ try:
             # Get the skill of the person
             sleep(1)
             all_skill = getSkills(driver)
+            # all_skill = 'getSkills'
             print('--- Profile name is: ', name.text)
             print('--- Profile location is: ', location.text)
             print('--- Profile title is: ', title.text)

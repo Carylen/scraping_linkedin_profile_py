@@ -19,7 +19,7 @@ def login(driver, url, email, password):
     # Task 1.2: Click the Login button
     password_field.send_keys(Keys.RETURN)
     # print('- Finish Task 1: Login to Linkedin')
-    sleep(1)
+    sleep(12)
     
     return '- Finish Task 1: Login to Linkedin'
 
@@ -38,7 +38,7 @@ def getPeople(driver, search_key):
     # Task 2.3: Filter that shows the related peoples only
     filter_selection = driver.find_element(by=By.CLASS_NAME, value='search-reusables__filters-bar-grouping')
     filtered = filter_selection.find_elements(by=By.TAG_NAME, value='li')
-    people = filtered[1].click()
+    people = filtered[2].click()
     sleep(3)
     print('- Finish Task 2: Search for profiles')
 
@@ -50,7 +50,6 @@ def getUrl(driver):
     all_profile_URL = []
     for profile in profiles:
         profile_URL = profile.get_attribute('href')
-        # profile_URL = "https://www.linkedin.com" + profile_ID
         if profile_URL not in all_profile_URL and 'https://' in profile_URL and '.com/' in profile_URL and '?miniProfileUrn=' in profile_URL:
             all_profile_URL.append(profile_URL)
             print(f"- Process this link : {profile_URL}")
@@ -58,22 +57,27 @@ def getUrl(driver):
 
 def getSkills(driver):
     skills = []
+    i = 0
     action_driver = ActionChains(driver)
     main_section = driver.find_element(by=By.TAG_NAME, value='main')
     inner_main_section = main_section.find_elements(by=By.TAG_NAME, value='section')
-    skill_button = inner_main_section[6]
+    skill_button = inner_main_section[5].find_element(by=By.CLASS_NAME, value='pvs-list__footer-wrapper')
     # skill_button = skill_button.find_element(by=By.CLASS_NAME, value='pvs-list__footer-wrapper')
-    # skill_button_link = skill_button.find_element(by=By.TAG_NAME, value='a')
     action_driver.scroll_to_element(skill_button).perform()
     sleep(2)
-    # skill_button_link.click()
+    skill_button.click()
+    sleep(2)
     # main_section_skill = driver.find_element(by=By.TAG_NAME, value='main')
     # list_skill = main_section_skill.find_element(by=By.TAG_NAME, value='ul')
-    list_skill = driver.find_elements(by=By.CSS_SELECTOR, value='main > section > div:nth-child(1) > div:nth-child(1) > div > div > div > ul > li')
+    list_skill = driver.find_elements(by=By.CSS_SELECTOR, value='main > section > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div > ul > li')
     for skill in list_skill:
         detail = skill.find_element(by=By.TAG_NAME, value='span').text
+        print(f"- len of list_skills = {len(list_skill)} ")
         if detail not in skills:
+            print(f"- Skills {i} : {detail}", sep="\n")
             skills.append(detail)
+        i += 1
         
     all_skill = ','.join(skills)
+    print(f"- After concatenated : {all_skill}")
     return all_skill
