@@ -48,16 +48,12 @@ try:
             main_container = driver.find_element(by=By.CLASS_NAME, value='mt2.relative')
             # Get the name of person
             name = main_container.find_element(by=By.TAG_NAME, value='h1').text
-            print("- Finished Getting the name of the person")
             # get the second <div>, then get the first <span> tag to get the value of location
             location = main_container.find_element(by=By.CSS_SELECTOR, value='div:nth-child(1) > span').text
-            print("- Finished Getting the location of the person")
             # Get the job title of the person
             title = main_container.find_element(by=By.CLASS_NAME, value='text-body-medium.break-words').text
-            print("- Finished Getting the jobTitle of the person")
             # Get the skill of the person
             all_skill = getSkills(driver)
-            print("- Finished Getting the skills of the person")
             sleep(2)
             # all_skill = 'getSkills'
             print('--- Profile name is: ', name)

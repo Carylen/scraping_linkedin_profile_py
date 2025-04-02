@@ -61,22 +61,17 @@ def getSkills(driver):
     skills = []
     i = 1
     action_driver = ActionChains(driver)
-    # main_section = driver.find_element(by=By.TAG_NAME, value='main')
-    # inner_main_section = main_section.find_elements(by=By.TAG_NAME, value='section')
-    # skill_section = inner_main_section.find.element
 
     # Wait for the <span> element that contains "skills" to be present
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, 7)
     # skills_span = driver.find_element(By.XPATH, "//h2/span[1][text()='Skills']")
     skills_span = wait.until(EC.presence_of_element_located((By.XPATH, "//h2/span[1][text()='Skills']")))
 
     # Traverse up to the section (adjust the number of parent steps as needed)
     parent_section = skills_span.find_element(By.XPATH, "./ancestor::section") # This gets the closest parent <section>
     action_driver.scroll_to_element(parent_section).perform()
-    sleep(2)
 
     skill_button = parent_section.find_element(by=By.CLASS_NAME, value='pvs-list__footer-wrapper')
-    # skill_button = skill_button.find_element(by=By.CLASS_NAME, value='pvs-list__footer-wrapper')
     skill_button.click()
     sleep(2)
     list_skill = driver.find_elements(by=By.CSS_SELECTOR, value='main > section > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div > ul > li')
@@ -84,10 +79,9 @@ def getSkills(driver):
     for skill in list_skill:
         detail = skill.find_element(by=By.TAG_NAME, value='span').text
         if detail not in skills:
-            print(f"- Skills No.{i} : {detail}\n")
+            # print(f"- Skills No.{i} : {detail}\n")
             skills.append(detail)
         i += 1
         
     all_skill = str(','.join(skills))
-    print(f"- After concatenated : {all_skill}")
     return all_skill
