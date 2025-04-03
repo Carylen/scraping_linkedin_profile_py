@@ -15,7 +15,7 @@ try:
     driver.set_window_size(max_width, max_height)
     login_message = login(driver, 'https://www.linkedin.com/login', 'iirham440@gmail.com', 'Hamza612')
     print(login_message)
-    people = getPeople(driver, 'Data Engineer')
+    people = getPeople(driver, 'Data Analyst')
     input_page = int(input('How many pages you want to scrape: '))
     URLs_all_page = []
     for page in range(input_page):
@@ -47,20 +47,20 @@ try:
             # Get the Main <div> to get the all of informations like name, position, location
             main_container = driver.find_element(by=By.CLASS_NAME, value='mt2.relative')
             # Get the name of person
-            name = main_container.find_element(by=By.TAG_NAME, value='h1')
+            name = main_container.find_element(by=By.TAG_NAME, value='h1').text
             # get the second <div>, then get the first <span> tag to get the value of location
-            location = main_container.find_element(by=By.CSS_SELECTOR, value='div:nth-child(1) > span')
+            location = main_container.find_element(by=By.CSS_SELECTOR, value='div:nth-child(1) > span').text
             # Get the job title of the person
-            title = main_container.find_element(by=By.CLASS_NAME, value='text-body-medium.break-words')
+            title = main_container.find_element(by=By.CLASS_NAME, value='text-body-medium.break-words').text
             # Get the skill of the person
-            sleep(1)
             all_skill = getSkills(driver)
+            sleep(2)
             # all_skill = 'getSkills'
-            print('--- Profile name is: ', name.text)
-            print('--- Profile location is: ', location.text)
-            print('--- Profile title is: ', title.text)
+            print('--- Profile name is: ', name)
+            print('--- Profile location is: ', location)
+            print('--- Profile title is: ', title)
             print('--- Profile skill is: ', all_skill)
-            writer.writerow({headers[0]:name.text.strip(), headers[1]:location.text.strip(), headers[2]:title.text.strip(), headers[3]:linkedin_URL, headers[4]:all_skill})
+            writer.writerow({headers[0]:name.strip(), headers[1]:location.strip(), headers[2]:title.strip(), headers[3]:linkedin_URL, headers[4]:all_skill})
             print('\n')
 
     print('Mission Completed!')
