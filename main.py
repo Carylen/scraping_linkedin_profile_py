@@ -4,13 +4,14 @@ from selenium.webdriver.common.by import By
 # from bs4 import BeautifulSoup
 from time import sleep
 from operations_helper import login, getUrl, getPeople, getSkills
-import csv
+import csv, time
 
 print('- Finish importing package')
 result = ''
 max_width = 720
 max_height = 900
 try:
+    start_time = time.time()
     driver = webdriver.Chrome()
     driver.set_window_size(max_width, max_height)
     login_message = login(driver, 'https://www.linkedin.com/login', 'iirham440@gmail.com', 'Hamza612')
@@ -21,14 +22,14 @@ try:
     for page in range(input_page):
         # URLs_one_page = GetURL('GvXnnMieLesgSiMjvOXypGYCDABjCBejdLw.')
         URLs_one_page = getUrl(driver)
-        sleep(2)
+        sleep(1.5)
         URLs_all_page = URLs_all_page + URLs_one_page
         if page > 1:
             driver.execute_script('window.scrollTo(0, document.body.scrollHeight);') #scroll to the end of the page
-            sleep(2)
+            # sleep(2)
             next_button = driver.find_element(by=By.CLASS_NAME, value="artdeco-pagination__button--next")
             driver.execute_script("arguments[0].click();", next_button)
-            sleep(2)
+            # sleep(2)
 
     print('- Finish Task 3: Scrape the URLs')
 
@@ -54,7 +55,7 @@ try:
             title = main_container.find_element(by=By.CLASS_NAME, value='text-body-medium.break-words').text
             # Get the skill of the person
             all_skill = getSkills(driver)
-            sleep(2)
+            # sleep(2)
             # all_skill = 'getSkills'
             print('--- Profile name is: ', name)
             print('--- Profile location is: ', location)
@@ -63,8 +64,10 @@ try:
             writer.writerow({headers[0]:name.strip(), headers[1]:location.strip(), headers[2]:title.strip(), headers[3]:linkedin_URL, headers[4]:all_skill})
             print('\n')
 
-    print('Mission Completed!')
     result = 'Success'
+    end_time = time.time()
+    total_time = end_time - start_time
+    print(f"✅ Mission Completed in {total_time:.2f}s ☑️")
 except Exception as e:
     print(e)
     result = e

@@ -35,13 +35,13 @@ def getPeople(driver, search_key):
     # Task 2.2: Input the search query to the search bar
     search_field.send_keys(search_key)
     search_field.send_keys(Keys.RETURN)
-    sleep(4)
+    sleep(2)
 
     # Task 2.3: Filter that shows the related peoples only
     filter_selection = driver.find_element(by=By.CLASS_NAME, value='search-reusables__filters-bar-grouping')
     filtered = filter_selection.find_elements(by=By.TAG_NAME, value='li')
     people = filtered[1].click()
-    sleep(3)
+    sleep(1)
     print('- Finish Task 2: Search for profiles')
 
     return people
