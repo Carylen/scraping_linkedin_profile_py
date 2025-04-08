@@ -1,26 +1,35 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-# from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 from time import sleep
 from operations_helper import login, getUrl, getPeople, getSkills
-import csv, time
+import csv, time, os
 
+load_dotenv()
 print('- Finish importing package')
 result = ''
 max_width = 720
 max_height = 900
+email = os.getenv('EMAIL')
+password = os.getenv('PASSWORD')
+print(email)
+print(password)
+
 try:
     start_time = time.time()
     driver = webdriver.Chrome()
     driver.set_window_size(max_width, max_height)
-    login_message = login(driver, 'https://www.linkedin.com/login', 'iirham440@gmail.com', 'Hamza612')
+    # Do the Login Process with call the login() func
+    login_message = login(driver, 'https://www.linkedin.com/login', email, password)
     print(login_message)
+    # Get the people section with some action like send keywords, click button, etc
     people = getPeople(driver, 'Data Analyst')
+    # Just because the linkedIn using pagination, so u can input how many pages that u want to scrap the data
     input_page = int(input('How many pages you want to scrape: '))
     URLs_all_page = []
     for page in range(input_page):
-        # URLs_one_page = GetURL('GvXnnMieLesgSiMjvOXypGYCDABjCBejdLw.')
+        # Get the link from each profile and store at variable 'URLs_all_page' 
         URLs_one_page = getUrl(driver)
         sleep(1.5)
         URLs_all_page = URLs_all_page + URLs_one_page
@@ -55,8 +64,6 @@ try:
             title = main_container.find_element(by=By.CLASS_NAME, value='text-body-medium.break-words').text
             # Get the skill of the person
             all_skill = getSkills(driver)
-            # sleep(2)
-            # all_skill = 'getSkills'
             print('--- Profile name is: ', name)
             print('--- Profile location is: ', location)
             print('--- Profile title is: ', title)
@@ -67,7 +74,7 @@ try:
     result = 'Success'
     end_time = time.time()
     total_time = end_time - start_time
-    print(f"✅ Mission Completed in {total_time:.2f}s ☑️")
+    print(f"✅ Mission Completed in {total_time:.2f}s ✅")
 except Exception as e:
     print(e)
     result = e
